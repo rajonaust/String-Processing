@@ -1,0 +1,56 @@
+// Knuth-Morris-Pratt
+// Give a text and a pattern . Calculate How many times the pattern is in the text as a substring.
+// Time Complexity O(n+m)
+// n -> length of text m -> length of pattern
+#include <stdio.h>
+#include <string.h>
+using namespace std;
+#define mx 100
+char text[mx+10],pattern[mx+10];
+int f[mx+10] , n , m ;
+void computePrefix()
+{
+    f[0]=f[1]=0;
+    for(int i=2;i<=m;i++)
+    {
+        int j = f[i-1];
+        while( 1 )
+        {
+            if(pattern[i-1]==pattern[j]) { f[i]=j+1; break; }
+            if(j==0) { f[i]=0; break; }
+            j=f[j];
+        }
+    }
+}
+int kmpMatcher()
+{
+    int i = 0 , j = 0 , ans = 0  ;
+    while(i<n)
+    {
+        if(text[i]==pattern[j])
+        {
+            i++ ; j ++ ;
+            if(j==m)
+            {
+                // If just need to recognize whether the pattern exist in the text or not , than send a true from here . If the pattern dose not exist than send a false after the loop break .
+                ans++;
+                j=f[m];
+            }
+        }
+        else if(j>0) j=f[j];
+        else i++;
+    }
+    return ans;
+}
+int main()
+{
+    freopen("input.txt","r",stdin);
+    while(scanf("%s%s",&text,&pattern)==2)
+    {
+        n = strlen(text);
+        m = strlen(pattern);
+        computePrefix();
+        printf("%d\n",kmpMatcher());
+    }
+    return 0;
+}
