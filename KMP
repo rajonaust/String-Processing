@@ -3,7 +3,7 @@
 // Time Complexity O(n+m)
 // n -> length of text m -> length of pattern
 #include <stdio.h>
-#include <string.h>
+#include <bits/stdc++.h>
 using namespace std;
 #define mx 100
 char text[mx+10],pattern[mx+10];
@@ -44,7 +44,6 @@ int kmpMatcher()
 }
 int main()
 {
-    freopen("input.txt","r",stdin);
     while(scanf("%s%s",&text,&pattern)==2)
     {
         n = strlen(text);
