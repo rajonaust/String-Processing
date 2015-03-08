@@ -1,0 +1,79 @@
+/* Suffix Array */
+/*  Time Complexity O(Nlog^2N) */
+#include <bits/stdc++.h>
+using namespace std;
+#define mx 30000
+struct Info
+{
+    int index , tup[2] ;
+    bool operator < (const Info &A) const
+    {
+        return tup[0]!=A.tup[0] ? tup[0] < A.tup[0] : tup[1] < A.tup[1]  ;
+    }
+}arr[mx+10];
+int Rank[25][mx+10] ;
+string store[mx+10] ;
+int main()
+{
+    freopen("output.txt","w",stdout);
+    string input ;
+    cin >> input ;
+    int n = input.size() ;
+    for(int i=0;i<n;i++)
+    {
+        store[i] = input.substr(i);
+        Rank[0][i] = input[i] ;
+    }
+    for( int step = 1 , jump = 1 ; jump < n ; step++ , jump*=2 )
+    {
+        for(int j=0;j<n;j++)
+        {
+            arr[j].index = j ;
+            arr[j].tup[0] = Rank[step-1][j] ;
+            arr[j].tup[1] = j+jump < n ? Rank[step-1][j+jump] : -1 ;
+        }
+        sort(arr,arr+n) ;
+        Rank[step][arr[0].index] = 0 ;
+        for(int j=1;j<n;j++)
+        {
+            Rank[step][arr[j].index] = arr[j].tup[0] == arr[j-1].tup[0] && arr[j].tup[1] == arr[j-1].tup[1] ?
+            Rank[step][arr[j-1].index] : Rank[step][arr[j-1].index]+1 ;
+        }
+    }
+    for(int j=0;j<n;j++)
+    {
+        cout << setw(2) << arr[j].index << ' ' << store[arr[j].index] << endl  ;
+    }
+    return 0;
+}
+/*
+abracadabra0AbRa4Cad14abra
+*/
+/*
+11 0AbRa4Cad14abra
+20 14abra
+16 4Cad14abra
+21 4abra
+12 AbRa4Cad14abra
+17 Cad14abra
+14 Ra4Cad14abra
+25 a
+10 a0AbRa4Cad14abra
+15 a4Cad14abra
+22 abra
+ 7 abra0AbRa4Cad14abra
+ 0 abracadabra0AbRa4Cad14abra
+ 3 acadabra0AbRa4Cad14abra
+18 ad14abra
+ 5 adabra0AbRa4Cad14abra
+13 bRa4Cad14abra
+23 bra
+ 8 bra0AbRa4Cad14abra
+ 1 bracadabra0AbRa4Cad14abra
+ 4 cadabra0AbRa4Cad14abra
+19 d14abra
+ 6 dabra0AbRa4Cad14abra
+24 ra
+ 9 ra0AbRa4Cad14abra
+ 2 racadabra0AbRa4Cad14abra
+*/
