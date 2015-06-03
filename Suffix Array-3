@@ -1,0 +1,88 @@
+/* Suffix Array */
+/* Time Complexity suffixSort - O(Nlog^2N) getlcp - O(N)  */
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+#define mx 100000
+char T[mx+10];
+int SA[mx+10] , R[mx+10] , L[mx+10] , H ;
+bool cmp (int p,int q) { return R[p+H] < R[q+H] ;}
+void suffixSort()
+{
+    int N = strlen(T); H = 0 ;
+    for(int i=0;i<=N;i++) R[SA[i]=i] = T[i] ;
+    sort(SA,SA+N+1,cmp);
+
+    for(int i=0;i<=N;i++)
+    {
+        R[SA[i]] = i ;
+        L[i] = 1 ;
+        if(i>0&&T[SA[i]]==T[SA[i-1]])
+        {
+            L[i] = 0 ;
+            L[R[SA[i]] = R[SA[i-1]]]++;
+        }
+    }
+
+    for(H=1;H<N;H<<=1)
+    {
+        for(int a=0;a<=N;a+=L[a]) if(L[a]>1) sort(SA+a,SA+a+L[a],cmp);
+
+        for(int a=0,k;a<=N;a+=k)
+        {
+            for(k=1;k<L[a]&&R[SA[a]+H]==R[SA[a+k]+H];k++);
+            if(k<L[a]) L[a+k] = L[a] - k ;
+            L[a] = k ;
+        }
+
+        for(int a=0;a<=N;a+=L[a])
+        {
+            for(int k=0;k<L[a];k++)
+                R[SA[a+k]] = a ;
+        }
+    }
+    puts("After Sorting Suffixes ::");
+    for(int i=1;i<=N;i++) printf("%d\n",SA[i]);
+}
+void getlcp()
+{
+    int N = strlen(T);
+    for(int i=0,c=0;i<N;i++)
+    {
+        if(c>0) c--;
+        int y = SA[R[i]-1] ;
+        while(T[i+c]==T[y+c]) c++ ;
+        L[R[i]] = c ;
+    }
+    puts("Longest Common Prefix ::");
+    for(int i=1;i<N;i++) printf("%d\n",L[i]);
+}
+int main()
+{
+    scanf("%s",&T);
+    suffixSort();
+    getlcp();
+    return 0;
+}
+/*
+abbcbba
+*/
+/*
+After Sorting Suffixes ::
+6
+0
+5
+4
+1
+2
+3
+Longest Common Prefix ::
+0
+1
+0
+1
+2
+1
+0
+*/
