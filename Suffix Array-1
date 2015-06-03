@@ -1,48 +1,58 @@
 /* Suffix Array */
-/* Time Complexity O(N^2logN) */
-#include <bits/stdc++.h>
+/* Time Complexity suffixSort - O(N^2logN) getlcp - O(N^2)  */
+#include <vector>
+#include <iostream>
+#include <algorithm>
 using namespace std;
-#define ff first
-#define ss second
+#define mx 100000
+string input ;
+vector < pair<string,int> > SA ;
+int lcp[mx+10] ;
+void suffixSort()
+{
+    int N = input.size() ;
+    for(int i=0;i<N;i++) SA.push_back(make_pair(input.substr(i),i));
+    sort(SA.begin(),SA.end());
+    cout << "After Sorting Suffixes ::\n" ;
+    for(int i=0;i<N;i++) cout << SA[i].second << endl ;
+}
+void getlcp()
+{
+    int N = input.size();
+    lcp[0] = 0 ;
+    for(int i=1;i<N;i++)
+    {
+        lcp[i]=0;
+        int j = 0 ;
+        while(j<SA[i].first.size()&&j<SA[i-1].first.size()&&SA[i].first[j]==SA[i-1].first[j]) lcp[i]++ , j++ ;
+    }
+    cout << "Longest Common Prefix ::\n" ;
+    for(int i=0;i<N;i++) cout << lcp[i] << endl ;
+}
 int main()
 {
-    string input ;
     cin >> input ;
-    int len = input.size() ;
-    vector < pair<string,int> > MyVector ;
-    for(int i=0;i<len;i++) MyVector.push_back(make_pair(input.substr(i),i));
-    sort(MyVector.begin(),MyVector.end());
-    for(int i=0;i<MyVector.size();i++) cout << setw(2) << MyVector[i].ss << ' ' << MyVector[i].ff << endl ;
-    return 0;
+    suffixSort();
+    getlcp();
 }
 /*
-abracadabra0AbRa4Cad14abra
+abbcbba
 */
 /*
-11 0AbRa4Cad14abra
-20 14abra
-16 4Cad14abra
-21 4abra
-12 AbRa4Cad14abra
-17 Cad14abra
-14 Ra4Cad14abra
-25 a
-10 a0AbRa4Cad14abra
-15 a4Cad14abra
-22 abra
- 7 abra0AbRa4Cad14abra
- 0 abracadabra0AbRa4Cad14abra
- 3 acadabra0AbRa4Cad14abra
-18 ad14abra
- 5 adabra0AbRa4Cad14abra
-13 bRa4Cad14abra
-23 bra
- 8 bra0AbRa4Cad14abra
- 1 bracadabra0AbRa4Cad14abra
- 4 cadabra0AbRa4Cad14abra
-19 d14abra
- 6 dabra0AbRa4Cad14abra
-24 ra
- 9 ra0AbRa4Cad14abra
- 2 racadabra0AbRa4Cad14abra
+After Sorting Suffixes ::
+6
+0
+5
+4
+1
+2
+3
+Longest Common Prefix ::
+0
+1
+0
+1
+2
+1
+0
 */
