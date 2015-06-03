@@ -20,7 +20,7 @@ void suffixSort()
     int N = strlen(input);
     for(int i=0;i<N;i++) R[0][i] = input[i] ;
     step=1;
-    for(int jump=1;jump<N;jump<<=1,step++)
+    for(int jump=1;jump<=N;jump<<=1,step++)
     {
         for(int j=0;j<N;j++)
         {
