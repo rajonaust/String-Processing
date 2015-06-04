@@ -64,6 +64,7 @@ void getlcp()
 int main()
 {
     scanf("%s",&input);
+    memset(R,-1,sizeof(R));
     suffixSort();
     getlcp();
 }
