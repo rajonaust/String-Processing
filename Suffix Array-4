@@ -81,7 +81,7 @@ void getlcp()
         L[R[i]] = c ;
     }
     puts("Longest Common Prefix ::");
-    for(int i=1;i<N;i++) printf("%d\n",L[i]);
+    for(int i=1;i<=N;i++) printf("%d\n",L[i]);
 }
 int main()
 {
