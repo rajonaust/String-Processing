@@ -77,7 +77,7 @@ void getlcp()
     {
         if(c>0) c--;
         int y = SA[R[i]-1] ;
-        while(T[i+c]==T[y+c]) c++ ;
+        while(i+c<N&&y+c<N&&T[i+c]==T[y+c]) c++ ;
         L[R[i]] = c ;
     }
     puts("Longest Common Prefix ::");
