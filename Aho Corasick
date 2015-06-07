@@ -1,6 +1,7 @@
 /* Aho Corasick */
 /* Give a string arr and a set of N words . Calculate how many time occurs every word from set , in string arr and where occur . */
 /* Time Complexity O(N) */
+
 #include <cstdio>
 #include <cstring>
 #include <cctype>
@@ -86,9 +87,9 @@ int nextState(int state, int txt)
 
 int main()
 {
-    freopen("input.txt","r",stdin);
-    scanf("%s",&arr);
-    scanf("%d",&N);
+    scanf("%s",&arr); // Given String .
+    scanf("%d",&N); // N is the Number of words in the set .
+
     for(int i=1;i<=N;i++)
     {
         scanf("%s",&words[i].arr);
@@ -117,7 +118,7 @@ int main()
     puts("");
     for(int i=1;i<=N;i++)
     {
-        printf("Word ' %s ' occurs %d time(s)\n",words[i].arr,words[i].occurence);
+        printf("Word ' %s ' occur(s) %d time(s)\n",words[i].arr,words[i].occurence);
     }
 
     return 0;
@@ -145,9 +146,9 @@ Word ' ba ' appears from 6 to 7
 Word ' a ' appears from 7 to 7
 Word ' abc ' appears from 7 to 9
 
-Word ' aba ' occurs 2 time
-Word ' ba ' occurs 3 time
-Word ' ac ' occurs 1 time
-Word ' a ' occurs 4 time
-Word ' abc ' occurs 1 time
+Word ' aba ' occur(s) 2 time(s)
+Word ' ba ' occur(s) 3 time(s)
+Word ' ac ' occur(s) 1 time(s)
+Word ' a ' occur(s) 4 time(s)
+Word ' abc ' occur(s) 1 time(s)
 */
