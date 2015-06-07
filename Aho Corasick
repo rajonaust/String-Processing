@@ -1,0 +1,150 @@
+/* Aho Corasick */
+/* Give a string arr and a set of N words . Calculate how many time occurs every word from set , in string arr and where occur . */
+/* Time Complexity O(N) */
+#include <cstdio>
+#include <cstring>
+#include <cctype>
+#include <queue>
+#include <bitset>
+using namespace std;
+#define mx 500*500
+
+struct
+{
+    int len , occurence ;
+    char arr[500+10] ;
+}words[500+10];
+
+bitset <510> out[mx+10] ;
+int g[mx+10][55] , f[mx+10] , N ;
+char arr[100000+10];
+
+int convert(char ch)
+{
+    if(islower(ch)) return ch-'a'+26 ;
+    else return ch-'A' ;
+}
+void buildMatchingMachine()
+{
+    memset(g,-1,sizeof(g));
+    memset(f,-1,sizeof(f));
+    memset(out,0,sizeof(out));
+    int states = 0 ;
+
+    for(int i=1;i<=N;i++)
+    {
+        int currentState = 0 ;
+        for(int j=0;j<words[i].len;j++)
+        {
+            int c = convert(words[i].arr[j]) ;
+            if(g[currentState][c]==-1) g[currentState][c] = ++states ;
+            currentState = g[currentState][c] ;
+        }
+        out[currentState].set(i);
+    }
+
+    for(int c=0;c<52;c++)
+    {
+        if(g[0][c]==-1) g[0][c] = 0 ;
+    }
+
+    queue <int> Q ;
+    for(int c=0;c<52;c++)
+    {
+        if(g[0][c]!=0&&g[0][c]!=-1)
+        {
+            f[g[0][c]] = 0 ;
+            Q.push(g[0][c]);
+        }
+    }
+
+    while(!Q.empty())
+    {
+        int state = Q.front();
+        Q.pop();
+        for(int c=0;c<52;c++)
+        {
+            if(g[state][c]!=-1)
+            {
+                int failure = f[state] ;
+                while(g[failure][c]==-1) failure = f[failure] ;
+                failure = g[failure][c] ;
+                f[g[state][c]] = failure ;
+                out[g[state][c]]|=out[failure];
+                Q.push(g[state][c]);
+            }
+        }
+    }
+}
+
+int nextState(int state, int txt)
+{
+    while(g[state][txt]==-1) state = f[state];
+    return g[state][txt] ;
+}
+int main()
+{
+    freopen("input.txt","r",stdin);
+    scanf("%s",&arr);
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++)
+    {
+        scanf("%s",&words[i].arr);
+        words[i].len = strlen(words[i].arr);
+        words[i].occurence = 0 ;
+    }
+
+    buildMatchingMachine();
+
+    int len = strlen(arr) , currentState = 0 ;
+    for(int i=0;i<len;i++)
+    {
+        currentState = nextState(currentState,convert(arr[i]));
+        if(out[currentState]==0) continue ;
+
+        for(int j=1;j<=N;j++)
+        {
+            if(out[currentState].test(j))
+            {
+                printf("Word ' %s ' appears from %d to %d\n",words[j].arr,i-words[j].len+1,i);
+                words[j].occurence++;
+            }
+        }
+    }
+
+    puts("");
+    for(int i=1;i<=N;i++)
+    {
+        printf("Word ' %s ' occurs %d time(s)\n",words[i].arr,words[i].occurence);
+    }
+
+    return 0;
+}
+/*
+ababacbabc
+5
+aba
+ba
+ac
+a
+abc
+*/
+/*
+Word ' a ' appears from 0 to 0
+Word ' aba ' appears from 0 to 2
+Word ' ba ' appears from 1 to 2
+Word ' a ' appears from 2 to 2
+Word ' aba ' appears from 2 to 4
+Word ' ba ' appears from 3 to 4
+Word ' a ' appears from 4 to 4
+Word ' ac ' appears from 4 to 5
+Word ' ba ' appears from 6 to 7
+Word ' a ' appears from 7 to 7
+Word ' abc ' appears from 7 to 9
+
+Word ' aba ' occurs 2 time
+Word ' ba ' occurs 3 time
+Word ' ac ' occurs 1 time
+Word ' a ' occurs 4 time
+Word ' abc ' occurs 1 time
+*/
