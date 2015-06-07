@@ -24,6 +24,7 @@ int convert(char ch)
     if(islower(ch)) return ch-'a'+26 ;
     else return ch-'A' ;
 }
+
 void buildMatchingMachine()
 {
     memset(g,-1,sizeof(g));
@@ -82,6 +83,7 @@ int nextState(int state, int txt)
     while(g[state][txt]==-1) state = f[state];
     return g[state][txt] ;
 }
+
 int main()
 {
     freopen("input.txt","r",stdin);
@@ -120,6 +122,7 @@ int main()
 
     return 0;
 }
+
 /*
 ababacbabc
 5
