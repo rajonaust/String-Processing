@@ -1,6 +1,6 @@
 /* Aho Corasick */
 /* Give a string arr and a set of N words . Calculate how many time occurs every word from set , in string arr and where occur . */
-/* Time Complexity O(N) */
+/* Time Complexity O(N*length(arr)) */
 
 #include <cstdio>
 #include <cstring>
