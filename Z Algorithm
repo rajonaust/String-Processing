@@ -1,0 +1,81 @@
+/* Z Algorithm */
+/* Give a String S and calculate Z , where Z[i] is the length of the
+   longest substring starting from S[i] which is also a prefix of S . */
+/* Time Complexity O(N) */
+
+#include <cstdio>
+#include <cstring>
+using namespace std;
+
+char S[1000000+10];
+int Z[1000000+10] ;
+
+void z_function()
+{
+    int n = strlen(S) , L = 0 , R = 0 ;
+
+    for(int i=1;i<n;i++)
+    {
+        if(i>R)
+        {
+            L=R=i;
+            while(R<n&&S[R]==S[R-i]) R++;
+            Z[i] = R - i ; R-- ;
+        }
+        else
+        {
+            int k = i - L ;
+            if(Z[k]<R-i+1) Z[i] = Z[k] ;
+            else
+            {
+                L = i ;
+                while(R<n&&S[R-L]==S[R]) R++;
+                Z[i] = R - L ; R--;
+            }
+        }
+    }
+
+    for(int i=0;i<n;i++) printf("%d = %d\n",i,Z[i]) ;
+}
+
+int main()
+{
+    scanf("%s",&S);
+    z_function();
+    return 0;
+}
+
+/*
+aaaaa
+*/
+/*
+0 = 0
+1 = 4
+2 = 3
+3 = 2
+4 = 1
+*/
+/*
+aaabaab
+*/
+/*
+0 = 0
+1 = 2
+2 = 1
+3 = 0
+4 = 2
+5 = 1
+6 = 0
+*/
+/*
+abacaba
+*/
+/*
+0 = 0
+1 = 0
+2 = 1
+3 = 0
+4 = 3
+5 = 0
+6 = 1
+*/
