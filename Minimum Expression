@@ -1,0 +1,39 @@
+// Minimum Expression by Zhou Yuan .
+// Given a string S . Find number of minimum rotation to make the string lexicographically smallest string .
+// Rotation means left shift like bcaaa -> caaab -> aaabc .
+// Time Complexity O(N) .
+#include <bits/stdc++.h>
+using namespace std;
+
+int minimumExpression(string S)
+{
+    S=S+S;
+    int len = S.size() , i = 0 , j = 1 , k = 0 ;
+    while( i+k<len && j+k<len )
+    {
+        if(S[i+k]==S[j+k]) k++;
+        else if(S[i+k]<S[j+k]) { j=j+k+1 ; if(j<=i) j=i+1 ; k = 0 ; }
+        else if(S[i+k]>S[j+k]) { i=i+k+1 ; if(i<=j) i=j+1 ; k = 0 ; }
+    }
+    return min(i,j) ;
+}
+int main()
+{
+
+    string S ;
+    cin >> S ;
+    cout << minimumExpression(S) << endl ;
+    return 0;
+}
+/*
+missipissi
+*/
+/*
+9
+*/
+/*
+bcaaa
+*/
+/*
+2
+*/
