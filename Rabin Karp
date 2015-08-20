@@ -1,0 +1,79 @@
+// Rabin Karp Algorithm
+// Hashing Technique
+// Given a text ( T ) and a pattern ( P ) . Find out how many times pattern occurs in text . 
+// Time Complexity O( length( T ) + length( P ) ) .
+
+#include <stdio.h>
+#include <string.h>
+using namespace std;
+
+const long long M1 = 1000000007 , M2 = 10000019 , h1 = 999983 , h2 = 99991 ; // Must be prime numbers for avoiding collision .
+char text[100+10] , pattern[100+10] ;
+
+int Hashing(char *txt,char *pat)
+{
+    int N = strlen(txt) , M = strlen(pat) , ans = 0 ;
+    long long d1 = 1 , d2 = 1 , T1 = 0 , T2 = 0 ,  P1 = 0 , P2 = 0 ;
+
+    for(int i=1;i<M;i++) d1 = ( d1*h1 )%M1 , d2 = ( d2*h2 )%M2 ;
+
+    for(int i=0;i<M;i++)
+    {
+        P1 = ( P1*h1+pat[i] )%M1 ;
+        P2 = ( P2*h2+pat[i] )%M2 ;
+        T1 = ( T1*h1+txt[i] )%M1 ;
+        T2 = ( T2*h2+txt[i] )%M2 ;
+    }
+
+    for(int i=0;i<=N-M;i++)
+    {
+        if(T1==P1&&T2==P2)
+        {
+            int j;
+            for(j=0;j<M;j++) if(pat[j]!=txt[i+j]) break ;
+
+            if(j==M)
+            {
+                printf("Found at index :: %d\n",i);
+                ans++;
+            }
+        }
+
+        T1 = ( ( T1 - d1*txt[i] )*h1 + txt[i+M] ) % M1 ;
+        T1 = ( T1+M1 )%M1 ;
+
+        T2 = ( ( T2 - d2*txt[i] )*h2 + txt[i+M] ) % M2 ;
+        T2 = ( T2+M2 )%M1 ;
+    }
+
+    return ans ;
+}
+
+int main()
+{
+    scanf("%s%s",&text,&pattern);
+    printf("Total matches :: %d\n",Hashing(text,pattern));
+
+    return 0;
+}
+
+/*
+GEEKSFORGEEKS
+GEEK
+*/
+/*
+Found at index :: 0
+Found at index :: 8
+Total matches :: 2
+*/
+
+/*
+abcdefabcbbabc
+abc
+*/
+/*
+Found at index :: 0
+Found at index :: 6
+Found at index :: 11
+Total matches :: 3
+*/
