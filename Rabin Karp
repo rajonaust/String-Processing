@@ -39,7 +39,7 @@ int Hashing(char *txt,char *pat)
             }
         }
 
-        T1 = ( ( ( T1 - d1*txt[i] ) %M1 )*h1 + txt[i+M] ) % M1 ;
+        T1 = ( ( ( T1 - d1*txt[i] ) %M1 ) *h1 + txt[i+M] ) % M1 ;
         T1 = ( T1+M1 )%M1 ;
 
         T2 = ( ( ( T2 - d2*txt[i] ) %M2 ) *h2 + txt[i+M] ) % M2 ;
