@@ -18,6 +18,7 @@ int lcp[mx+10] , R[25][mx+10] , step ;
 void suffixSort()
 {
     int N = strlen(input);
+    memset(R,-1,sizeof(R));
     for(int i=0;i<N;i++) R[0][i] = input[i] ;
     step=1;
     for(int jump=1;jump<=N;jump<<=1,step++)
@@ -64,7 +65,6 @@ void getlcp()
 int main()
 {
     scanf("%s",&input);
-    memset(R,-1,sizeof(R));
     suffixSort();
     getlcp();
 }
